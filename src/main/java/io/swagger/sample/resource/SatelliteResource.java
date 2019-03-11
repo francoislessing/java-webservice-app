@@ -29,11 +29,11 @@ import java.util.List;
 @Api(tags = {"satellite"})
 @Produces({"application/json", "application/xml"})
 public class SatelliteResource {
-  static SatelliteData petData = new SatelliteData();
+  static SatelliteData satData = new SatelliteData();
 
   @GET
   @Path("/{satId}")
-  @ApiOperation(value = "Find pet by ID !", 
+  @ApiOperation(value = "Find satellite by ID ", 
     notes = "Returns a satellite, will return error condition if satellite does not exist",
     response = Satellite.class)
   @ApiResponses(value = { @ApiResponse(code = 400, message = "Invalid ID supplied"),
@@ -42,12 +42,12 @@ public class SatelliteResource {
       @ApiParam(value = "ID of sat that needs to be fetched", 
               allowableValues = "range[1,100]", 
               required = true)
-      @PathParam("satId") Long petId) throws io.swagger.sample.exception.NotFoundException {
-    Satellite pet = petData.getSatelliteById(petId);
-    if (null != pet) {
-      return Response.ok().entity(pet).build();
+      @PathParam("satId") Long satId) throws io.swagger.sample.exception.NotFoundException {
+    Satellite sat = satData.getSatelliteById(satId);
+    if (null != sat) {
+      return Response.ok().entity(sat).build();
     } else {
-      throw new io.swagger.sample.exception.NotFoundException(404, "Pet not found");
+      throw new io.swagger.sample.exception.NotFoundException(404, "Satellite not found");
     }
   }
 
@@ -56,7 +56,7 @@ public class SatelliteResource {
   @ApiResponses(value = { @ApiResponse(code = 405, message = "Invalid input") })
   public Response addPet(
       @ApiParam(value = "Sat object that needs to be added to the store", required = true) Satellite pet) {
-    petData.addSatellite(pet);
+    satData.addSatellite(pet);
     return Response.ok().entity("SUCCESS").build();
   }
 
@@ -67,23 +67,23 @@ public class SatelliteResource {
       @ApiResponse(code = 405, message = "Validation exception") })
   public Response updatePet(
       @ApiParam(value = "Sat object that needs to be added to the store", required = true) Satellite pet) {
-    petData.addSatellite(pet);
+    satData.addSatellite(pet);
     return Response.ok().entity("SUCCESS").build();
   }
 
-//  @GET
-//  @Path("/findByStatus")
-//  @ApiOperation(value = "Finds satellites by status", 
-//    notes = "Multiple status values can be provided with comma separated strings", 
-//    response = Satellite.class, 
-//    responseContainer = "List")
-//  @ApiResponses(value = { @ApiResponse(code = 400, message = "Invalid status value") })
-//  public Response findPetsByStatus(
-//      @ApiParam(value = "Status values that need to be considered for filter", required = true, defaultValue = "available", allowableValues = "available,pending,sold", allowMultiple = true) @QueryParam("status") String status,
-//      @BeanParam QueryResultBean qr
-//){
-//    return Response.ok(new GenericEntity<List<Satellite>>(petData.findSatelliteByStatus(status)){}).build();
-//  }
+  @GET
+  @Path("/getAll")
+  @ApiOperation(value = "Finds all satellites ", 
+    notes = "criteria may be added to later versions", 
+    response = Satellite.class, 
+    responseContainer = "List")
+  @ApiResponses(value = { @ApiResponse(code = 400, message = "Invalid status value") })
+  public Response findSatellites(
+      //@ApiParam(value = "Status values that need to be considered for filter", required = true, defaultValue = "available", allowableValues = "available,pending,sold", allowMultiple = true) @QueryParam("status") String status,
+      @BeanParam QueryResultBean qr
+){
+    return Response.ok(new GenericEntity<List<Satellite>>(satData.findSatellites()){}).build();
+  }
 
 //  @GET
 //  @Path("/findByTags")

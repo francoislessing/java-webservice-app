@@ -125,18 +125,13 @@ public class SatelliteData {
     return null;
   }
 
-//  public List<Satellite> findSatelliteByStatus(String status) {
-//    String[] statues = status.split(",");
-//    List<Satellite> result = new java.util.ArrayList<Satellite>();
-//    for (Satellite pet : satellites) {
-//      for (String s : statues) {
-//        if (s.equals(pet.getStatus())) {
-//          result.add(pet);
-//        }
-//      }
-//    }
-//    return result;
-//  }
+  public List<Satellite> findSatellites() {
+    List<Satellite> result = new java.util.ArrayList<Satellite>();
+    for (Satellite sat : satellites) {         
+        result.add(sat);              
+    }
+    return result;
+  }
 
 //  public List<Satellite> findPetByTags(String tags) {
 //    String[] tagList = tags.split(",");
