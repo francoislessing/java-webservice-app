@@ -57,7 +57,7 @@ public class Trace {
   
   @XmlElement(name = "longitude")
   public float  getLongitude() {
-    return latitude;
+    return longitude;
   }
 
   public void setLongitude(float longitude) {
