@@ -116,15 +116,30 @@ public class SatelliteData {
 //        "url1", "url2" }, new String[] { "tag3", "tag4" }, "available"));
   }
 
-  public Satellite getSatelliteById(long petId) {
-    for (Satellite pet : satellites) {
-      if (pet.getId() == petId) {
-        return pet;
+  public Satellite getSatelliteById(long satId) {
+    for (Satellite sat : satellites) {
+      if (sat.getId() == satId) {
+        return sat;
       }
     }
     return null;
   }
 
+  public Satellite deleteSatelliteById(long satId) {
+    //List<Satellite> satellitesLocal = satellites;
+    int lastSatDeleted=-1;
+    int index = 0;
+    for (Satellite sat : satellites) {       
+      if (sat.getId() == satId) {
+        lastSatDeleted = index;        
+      }
+      index++;
+    }
+    if (lastSatDeleted == -1) return null;
+    return satellites.remove(lastSatDeleted);
+  }
+  
+  
   public List<Satellite> findSatellites() {
     List<Satellite> result = new java.util.ArrayList<Satellite>();
     for (Satellite sat : satellites) {         

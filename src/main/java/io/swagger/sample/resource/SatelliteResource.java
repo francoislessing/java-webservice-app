@@ -42,7 +42,8 @@ public class SatelliteResource {
       @ApiParam(value = "ID of sat that needs to be fetched", 
               allowableValues = "range[1,100]", 
               required = true)
-      @PathParam("satId") Long satId) throws io.swagger.sample.exception.NotFoundException {
+      @PathParam("satId") 
+      Long satId) throws io.swagger.sample.exception.NotFoundException {
     Satellite sat = satData.getSatelliteById(satId);
     if (null != sat) {
       return Response.ok().entity(sat).build();
@@ -66,10 +67,33 @@ public class SatelliteResource {
       @ApiResponse(code = 404, message = "Satellite not found"),
       @ApiResponse(code = 405, message = "Validation exception") })
   public Response updatePet(
-      @ApiParam(value = "Sat object that needs to be added to the store", required = true) Satellite pet) {
-    satData.addSatellite(pet);
+      @ApiParam(value = "Sat object that needs to be added to the store", required = true) Satellite sat) {
+    satData.addSatellite(sat);
     return Response.ok().entity("SUCCESS").build();
   }
+  
+  @DELETE
+  @Path("/{satId}")
+  @ApiOperation(value = "Delete satellite entry")
+  @ApiResponses(value = { @ApiResponse(code = 400, message = "Invalid ID supplied"),
+      @ApiResponse(code = 404, message = "Satellite not found"),
+      @ApiResponse(code = 405, message = "Validation exception") }
+  )
+  public Response deleteSatellite(
+          @ApiParam(value = "ID of sat that needs to be deleted", 
+              allowableValues = "range[1,100]", 
+              required = true)
+      @PathParam("satId") 
+      Long satId) throws io.swagger.sample.exception.NotFoundException
+  {    
+    Satellite sat = satData.deleteSatelliteById(satId);
+    if (null != sat) {
+      return Response.ok().entity("{\"Status\":\"Success\"}").build();
+    } else {
+      throw new io.swagger.sample.exception.NotFoundException(404, "Satellite not found");
+    }      
+      
+  };
 
   @GET
   @Path("/getAll")
