@@ -33,8 +33,66 @@ public class SatelliteData {
 //    categories.add(createCategory(3, "Rabbits"));
 //    categories.add(createCategory(4, "Lions"));
 
-//    pets.add(createPet(1, categories.get(1), "Cat 1", new String[] {
-//        "url1", "url2" }, new String[] { "tag1", "tag2" }, "available"));
+    satellites.add(createSatellite(1, "Sat1", "Const1", 
+            new String[][] {{"11 March 2019","13","13","13"},    
+                            {"11 March 2019","13","13","13"},
+                            {"11 March 2019","14","14","14"},
+                            }, 
+            12));
+    satellites.add(createSatellite(2, "Sat1", "Const1", 
+            new String[][] {{"11 March 2019","13","13","13"},    
+                            {"11 March 2019","13","13","13"},
+                            {"11 March 2019","14","14","14"},
+                            }, 
+            12));
+    satellites.add(createSatellite(3, "Sat1", "Const1", 
+            new String[][] {{"11 March 2019","13","13","13"},    
+                            {"11 March 2019","13","13","13"},
+                            {"11 March 2019","14","14","14"},
+                            }, 
+            12));    
+    satellites.add(createSatellite(4, "Sat1", "Const1", 
+            new String[][] {{"11 March 2019","13","13","13"},    
+                            {"11 March 2019","13","13","13"},
+                            {"11 March 2019","14","14","14"},
+                            }, 
+            12));    
+    satellites.add(createSatellite(5, "Sat1", "Const1", 
+            new String[][] {{"11 March 2019","13","13","13"},    
+                            {"11 March 2019","13","13","13"},
+                            {"11 March 2019","14","14","14"},
+                            }, 
+            12));    
+    satellites.add(createSatellite(6, "Sat1", "Const1", 
+            new String[][] {{"11 March 2019","13","13","13"},    
+                            {"11 March 2019","13","13","13"},
+                            {"11 March 2019","14","14","14"},
+                            }, 
+            12));    
+    satellites.add(createSatellite(7, "Sat1", "Const1", 
+            new String[][] {{"11 March 2019","13","13","13"},    
+                            {"11 March 2019","13","13","13"},
+                            {"11 March 2019","14","14","14"},
+                            }, 
+            12));    
+    satellites.add(createSatellite(8, "Sat1", "Const1", 
+            new String[][] {{"11 March 2019","13","13","13"},    
+                            {"11 March 2019","13","13","13"},
+                            {"11 March 2019","14","14","14"},
+                            }, 
+            12));    
+    satellites.add(createSatellite(9, "Sat1", "Const1", 
+            new String[][] {{"11 March 2019","13","13","13"},    
+                            {"11 March 2019","13","13","13"},
+                            {"11 March 2019","14","14","14"},
+                            }, 
+            12));    
+    satellites.add(createSatellite(10, "Sat1", "Const1", 
+            new String[][] {{"11 March 2019","13","13","13"},    
+                            {"11 March 2019","13","13","13"},
+                            {"11 March 2019","14","14","14"},
+                            }, 
+            12));    
 //    pets.add(createPet(2, categories.get(1), "Cat 2", new String[] {
 //        "url1", "url2" }, new String[] { "tag2", "tag3" }, "available"));
 //    pets.add(createPet(3, categories.get(1), "Cat 3", new String[] {
@@ -67,18 +125,18 @@ public class SatelliteData {
     return null;
   }
 
-  public List<Satellite> findSatelliteByStatus(String status) {
-    String[] statues = status.split(",");
-    List<Satellite> result = new java.util.ArrayList<Satellite>();
-    for (Satellite pet : satellites) {
-      for (String s : statues) {
-        if (s.equals(pet.getStatus())) {
-          result.add(pet);
-        }
-      }
-    }
-    return result;
-  }
+//  public List<Satellite> findSatelliteByStatus(String status) {
+//    String[] statues = status.split(",");
+//    List<Satellite> result = new java.util.ArrayList<Satellite>();
+//    for (Satellite pet : satellites) {
+//      for (String s : statues) {
+//        if (s.equals(pet.getStatus())) {
+//          result.add(pet);
+//        }
+//      }
+//    }
+//    return result;
+//  }
 
 //  public List<Satellite> findPetByTags(String tags) {
 //    String[] tagList = tags.split(",");
@@ -107,33 +165,35 @@ public class SatelliteData {
     satellites.add(pet);
   }
 
-  static Satellite createSatellite(long id, String name, String[] urls,
-      String[] traces, String status) {
-    Satellite pet = new Satellite();
-    pet.setId(id);
-    
-    pet.setName(name);
-    if (null != urls) {
-      List<String> urlObjs = new ArrayList<String>();
-      for (String urlString : urls) {
-        urlObjs.add(urlString);
-      }
-      pet.setPhotoUrls(urlObjs);
-    }
-    List<Trace> tagObjs = new java.util.ArrayList<Trace>();
+  static Satellite createSatellite(
+          long id, 
+          String displayName,
+          String constellation, 
+          String[][] traces,
+          long prn) {
+    Satellite satellite = new Satellite();
+    satellite.setId(id);  
+    satellite.setDisplayName(displayName);
+    satellite.setConstellation(constellation);
+    satellite.setPrn(prn);
+
+    List<Trace> traceObjs = new java.util.ArrayList<Trace>();
     int i = 0;
     if (null != traces) {
-      for (String tagString : traces) {
+      for (String[] traceItem : traces) {
         i = i + 1;
         Trace tag = new Trace();
         tag.setId(i);
-        tag.setName(tagString);
-        tagObjs.add(tag);
+        tag.setAsAt(traceItem[0]);
+        tag.setHeight(Float.parseFloat(traceItem[1]));
+        tag.setLongitude(Float.parseFloat(traceItem[2]));
+        tag.setLatitude(Float.parseFloat(traceItem[3]));
+        traceObjs.add(tag);
       }
     }
-    pet.setTraces(tagObjs);
-    pet.setStatus(status);
-    return pet;
+    satellite.setTraces(traceObjs);
+    
+    return satellite;
   }
 
 }

@@ -23,15 +23,15 @@ import java.util.ArrayList;
 
 import javax.xml.bind.annotation.*;
 
-@XmlRootElement(name = "Pet")
+@XmlRootElement(name = "Satellite")
 public class Satellite {
-  private long id;
-  //private Category category;
-  private String name;
-  private List<String> photoUrls = new ArrayList<String>();
-  private List<Trace> traces = new ArrayList<Trace>();
-  private String status;
-
+  private long id; //TICK
+  private String constellation; //TICK
+  private String displayName;  //TICK
+  //private OrbitType orbit;  // 
+  private List<Trace> traces = new ArrayList<Trace>(); // Path and Trace combined //TICK
+  private long prn; // TICK
+  
   @XmlElement(name = "id")
   public long getId() {
     return id;
@@ -41,36 +41,33 @@ public class Satellite {
     this.id = id;
   }
 
-//  @XmlElement(name = "category")
-//  public Category getCategory() {
-//    return category;
-//  }
-//
-//  public void setCategory(Category category) {
-//    this.category = category;
-//  }
 
-  @XmlElement(name = "name")
-  public String getName() {
-    return name;
+
+  @XmlElement(name = "displayName")
+  //@ApiModelProperty(value = "Satellite name")
+  public String getDisplayName() {
+    return displayName;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setDisplayName(String name) {
+    this.displayName = name;
   }
 
-  @XmlElementWrapper(name = "photoUrls")
-  @XmlElement(name = "photoUrl")
-  public List<String> getPhotoUrls() {
-    return photoUrls;
+
+  @XmlElement(name = "constellation")
+  public String getConstellation() {
+    return this.constellation;
   }
 
-  public void setPhotoUrls(List<String> photoUrls) {
-    this.photoUrls = photoUrls;
+  public void setConstellation(String constellation) {
+    this.constellation = constellation;
   }
 
-  @XmlElementWrapper(name = "tags")
-  @XmlElement(name = "tag")
+  
+  
+
+  @XmlElementWrapper(name = "traces")
+  @XmlElement(name = "trace")
   public List<Trace> getTraces() {
     return traces;
   }
@@ -79,13 +76,13 @@ public class Satellite {
     this.traces = traces;
   }
 
-  @XmlElement(name = "status")
-  @ApiModelProperty(value = "pet status in the store", allowableValues = "available,pending,sold")
-  public String getStatus() {
-    return status;
+  @XmlElement(name = "prn")
+  public long getPrn() {
+    return this.prn;
   }
 
-  public void setStatus(String status) {
-    this.status = status;
+  public void setPrn(long prn) {
+    this.prn = prn;
   }
+
 }

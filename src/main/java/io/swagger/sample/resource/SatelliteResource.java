@@ -63,7 +63,7 @@ public class SatelliteResource {
   @PUT
   @ApiOperation(value = "Update an existing satellite")
   @ApiResponses(value = { @ApiResponse(code = 400, message = "Invalid ID supplied"),
-      @ApiResponse(code = 404, message = "Pet not found"),
+      @ApiResponse(code = 404, message = "Satellite not found"),
       @ApiResponse(code = 405, message = "Validation exception") })
   public Response updatePet(
       @ApiParam(value = "Sat object that needs to be added to the store", required = true) Satellite pet) {
@@ -71,19 +71,19 @@ public class SatelliteResource {
     return Response.ok().entity("SUCCESS").build();
   }
 
-  @GET
-  @Path("/findByStatus")
-  @ApiOperation(value = "Finds satellites by status", 
-    notes = "Multiple status values can be provided with comma separated strings", 
-    response = Satellite.class, 
-    responseContainer = "List")
-  @ApiResponses(value = { @ApiResponse(code = 400, message = "Invalid status value") })
-  public Response findPetsByStatus(
-      @ApiParam(value = "Status values that need to be considered for filter", required = true, defaultValue = "available", allowableValues = "available,pending,sold", allowMultiple = true) @QueryParam("status") String status,
-      @BeanParam QueryResultBean qr
-){
-    return Response.ok(new GenericEntity<List<Satellite>>(petData.findSatelliteByStatus(status)){}).build();
-  }
+//  @GET
+//  @Path("/findByStatus")
+//  @ApiOperation(value = "Finds satellites by status", 
+//    notes = "Multiple status values can be provided with comma separated strings", 
+//    response = Satellite.class, 
+//    responseContainer = "List")
+//  @ApiResponses(value = { @ApiResponse(code = 400, message = "Invalid status value") })
+//  public Response findPetsByStatus(
+//      @ApiParam(value = "Status values that need to be considered for filter", required = true, defaultValue = "available", allowableValues = "available,pending,sold", allowMultiple = true) @QueryParam("status") String status,
+//      @BeanParam QueryResultBean qr
+//){
+//    return Response.ok(new GenericEntity<List<Satellite>>(petData.findSatelliteByStatus(status)){}).build();
+//  }
 
 //  @GET
 //  @Path("/findByTags")

@@ -20,8 +20,12 @@ import javax.xml.bind.annotation.*;
 
 @XmlRootElement(name = "Tag")
 public class Trace {
+  public String asAt;
+  public float height;
+  public float latitude;
+  public float longitude;    
+  
   private long id;
-  private String name;
 
   @XmlElement(name = "id")
   public long getId() {
@@ -32,12 +36,44 @@ public class Trace {
     this.id = id;
   }
 
-  @XmlElement(name = "name")
-  public String getName() {
-    return name;
+  @XmlElement(name = "height")
+  public float  getHeight() {
+    return height;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setHeight(float height) {
+    this.height = height;
   }
+
+  @XmlElement(name = "latitude")
+  public float  getLatitude() {
+    return latitude;
+  }
+
+  public void setLatitude(float latitude) {
+    this.latitude = latitude;
+  }
+
+  
+  @XmlElement(name = "longitude")
+  public float  getLongitude() {
+    return latitude;
+  }
+
+  public void setLongitude(float longitude) {
+    this.longitude = longitude;
+  }
+
+  
+  @XmlElement(name = "asAt")
+  public String  getAsAt() {
+    return asAt;
+  }
+
+  public void setAsAt(String asAt) {
+    this.asAt = asAt;
+  }
+
+  // Add remaining methods
+  
 }
