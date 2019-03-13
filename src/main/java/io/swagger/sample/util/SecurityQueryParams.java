@@ -93,6 +93,8 @@ String generatedPassword = null;
   public boolean compareTokens(String localDateTime){
       // Lookup password from user name
       String password = "WEROIU&(34KHJFDSfdkljewr98734";
+      // Check that time provided is close to Local Date Time
+      
       // Calculate hash from time username and password
       String compositeToken = localDateTime +":"+ this.userName + ":" + password;
       String hash = get_SHA_512_SecurePassword(compositeToken,"1234567890");
