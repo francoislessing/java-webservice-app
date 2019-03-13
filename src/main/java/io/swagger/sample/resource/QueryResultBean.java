@@ -24,8 +24,7 @@ public class QueryResultBean {
 
   @QueryParam("limit")
   private Integer limit;
-
-
+  
   public Integer getSkip() {
     return skip;
   }

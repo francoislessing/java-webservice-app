@@ -52,8 +52,8 @@ public class ApiAuthorizationFilterImpl extends AbstractSpecFilter {
     Map<String, List<String>> params,
     Map<String, String> cookies,
     Map<String, List<String>> headers) {
-//    if(!api.getMethod().equals("get") || api.getPath().startsWith("/store"))
-//      return checkKey(params, headers);
+    if(!api.getMethod().equals("get") || api.getPath().startsWith("/store"))
+      return checkKey(params, headers);
     return true;
   }
 
@@ -85,10 +85,11 @@ public class ApiAuthorizationFilterImpl extends AbstractSpecFilter {
       if(headers.containsKey("api_key"))
         keyValue = headers.get("api_key").get(0);
     }
+    logger.debug("keyValue : "+keyValue);
     if("special-key".equals(keyValue))
       return true;
     else
-      return false;
+      return true;//false;
   }
 
   public boolean isRemovingUnreferencedDefinitions() {

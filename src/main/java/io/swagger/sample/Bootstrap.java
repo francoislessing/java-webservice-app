@@ -16,7 +16,7 @@ public class Bootstrap extends HttpServlet {
     Info info = new Info()
       .title("Swagger Sample Appp")
             .version("1.0.1")
-      .description("This is a sample server Petstore server.  You can find out more about Swagger " + 
+      .description("This is a sample server SatelliteStore server.  You can find out more about Swagger " + 
         "at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).  For this sample, " +
         "you can use the api key `special-key` to test the authorization filters.")
       .termsOfService("http://swagger.io/terms/")
@@ -28,12 +28,12 @@ public class Bootstrap extends HttpServlet {
 
     ServletContext context = config.getServletContext();
     Swagger swagger = new Swagger().info(info);
-    swagger.securityDefinition("api_key", new ApiKeyAuthDefinition("api_key", In.HEADER));
-    swagger.securityDefinition("petstore_auth", 
-      new OAuth2Definition()
-        .implicit("http://petstore.swagger.io/api/oauth/dialog")
-        .scope("read:pets", "read your pets")
-        .scope("write:pets", "modify pets in your account"));
+    swagger.securityDefinition("api_key", new ApiKeyAuthDefinition("api_key", In.QUERY));
+//    swagger.securityDefinition("petstore_auth", 
+//      new OAuth2Definition()
+//        .implicit("http://petstore.swagger.io/api/oauth/dialog")
+//        .scope("read:pets", "read your pets")
+//        .scope("write:pets", "modify pets in your account"));
     new SwaggerContextService().withServletConfig(config).updateSwagger(swagger);
   }
 }

@@ -17,6 +17,7 @@
 package io.swagger.sample.resource;
 
 import io.swagger.annotations.*;
+import io.swagger.sample.util.SecurityQueryParams;
 import io.swagger.sample.data.SatelliteData;
 import io.swagger.sample.model.Satellite;
 
@@ -24,11 +25,14 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.*;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Path("/satellite")
 @Api(tags = {"satellite"})
 @Produces({"application/json", "application/xml"})
 public class SatelliteResource {
+  static Logger logger = LoggerFactory.getLogger(SatelliteResource.class);
   static SatelliteData satData = new SatelliteData();
 
   @GET
@@ -53,7 +57,10 @@ public class SatelliteResource {
   }
 
   @POST
-  @ApiOperation(value = "Add a new Satellite to the store")
+  @ApiOperation(value = "Add a new Satellite to the store",
+          authorizations = {
+      @Authorization(
+          value="api_key")} )
   @ApiResponses(value = { @ApiResponse(code = 405, message = "Invalid input") })
   public Response addPet(
       @ApiParam(value = "Sat object that needs to be added to the store", required = true) Satellite pet) {
@@ -74,7 +81,10 @@ public class SatelliteResource {
   
   @DELETE
   @Path("/{satId}")
-  @ApiOperation(value = "Delete satellite entry")
+  @ApiOperation(value = "Delete satellite entry",
+          authorizations = {
+      @Authorization(
+          value="api_key")} )
   @ApiResponses(value = { @ApiResponse(code = 400, message = "Invalid ID supplied"),
       @ApiResponse(code = 404, message = "Satellite not found"),
       @ApiResponse(code = 405, message = "Validation exception") }
@@ -84,14 +94,25 @@ public class SatelliteResource {
               allowableValues = "range[1,100]", 
               required = true)
       @PathParam("satId") 
-      Long satId) throws io.swagger.sample.exception.NotFoundException
-  {    
-    Satellite sat = satData.deleteSatelliteById(satId);
-    if (null != sat) {
-      return Response.ok().entity("{\"Status\":\"Success\"}").build();
-    } else {
-      throw new io.swagger.sample.exception.NotFoundException(404, "Satellite not found");
+      Long satId,
+      @BeanParam SecurityQueryParams qr) throws io.swagger.sample.exception.NotFoundException
+  {  
+    if(qr != null  ) {
+        
+       
+        logger.debug("apiKey : " + qr.getApiKey());
+       
+        if(qr.compareTokens("2019-03-12 10:59:00")) {            
+            Satellite sat = satData.deleteSatelliteById(satId);
+            if (null != sat) {
+              return Response.ok().entity("{\"Status\":\"Success\"}").build();
+            } else {
+              throw new io.swagger.sample.exception.NotFoundException(404, "Satellite not found");
+            }                                 
+        }
+               
     }      
+    return Response.serverError().build();
       
   };
 
@@ -105,7 +126,7 @@ public class SatelliteResource {
   public Response findSatellites(
       //@ApiParam(value = "Status values that need to be considered for filter", required = true, defaultValue = "available", allowableValues = "available,pending,sold", allowMultiple = true) @QueryParam("status") String status,
       @BeanParam QueryResultBean qr
-){
+){    
     return Response.ok(new GenericEntity<List<Satellite>>(satData.findSatellites()){}).build();
   }
 
