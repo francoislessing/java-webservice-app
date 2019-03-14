@@ -63,22 +63,43 @@ public class SatelliteResource {
           value="api_key")} )
   @ApiResponses(value = { @ApiResponse(code = 405, message = "Invalid input") })
   public Response addPet(
-      @ApiParam(value = "Sat object that needs to be added to the store", required = true) Satellite pet) {
-    satData.addSatellite(pet);
-    return Response.ok().entity("SUCCESS").build();
+      @ApiParam(value = "Sat object that needs to be added to the store", required = true) Satellite pet,
+          @HeaderParam("api_key") String apiKey) {
+      
+        SecurityQueryParams tokenCheck= new SecurityQueryParams(apiKey);       
+
+        
+        if(tokenCheck.compareTokens("20190312 105900")) {  
+        satData.addSatellite(pet);
+        return Response.ok().entity("SUCCESS").build();
+    }
+    return Response.serverError().build();
   }
 
   @PUT
-  @ApiOperation(value = "Update an existing satellite")
+  @ApiOperation(value = "Update an existing satellite",
+          authorizations = {
+      @Authorization(
+          value="api_key")})
   @ApiResponses(value = { @ApiResponse(code = 400, message = "Invalid ID supplied"),
       @ApiResponse(code = 404, message = "Satellite not found"),
       @ApiResponse(code = 405, message = "Validation exception") })
   public Response updatePet(
-      @ApiParam(value = "Sat object that needs to be added to the store", required = true) Satellite sat) {
-    satData.addSatellite(sat);
-    return Response.ok().entity("SUCCESS").build();
+      @ApiParam(value = "Sat object that needs to be added to the store", required = true) Satellite sat,
+      @HeaderParam("api_key") String apiKey) {
+      
+        SecurityQueryParams tokenCheck= new SecurityQueryParams(apiKey);       
+
+        
+        if(tokenCheck.compareTokens("20190312 105900")) {        
+      
+            satData.addSatellite(sat);
+            return Response.ok().entity("SUCCESS").build();
+        }
+        
+        return Response.serverError().build();
+        
   }
-  
   @DELETE
   @Path("/{satId}")
   @ApiOperation(value = "Delete satellite entry",
@@ -94,15 +115,15 @@ public class SatelliteResource {
               allowableValues = "range[1,100]", 
               required = true)
       @PathParam("satId") 
-      Long satId,
-      @BeanParam SecurityQueryParams qr) throws io.swagger.sample.exception.NotFoundException
-  {  
-    if(qr != null  ) {
+      Long satId,      
+      @HeaderParam("api_key") String apiKey) throws io.swagger.sample.exception.NotFoundException
+  {          
+        logger.debug("apiKey : " + apiKey );
+      
+        SecurityQueryParams tokenCheck= new SecurityQueryParams(apiKey);       
+
         
-       
-        logger.debug("apiKey : " + qr.getApiKey());
-       
-        if(qr.compareTokens("2019-03-12 10:59:00")) {            
+        if(tokenCheck.compareTokens("20190312 105900")) {            
             Satellite sat = satData.deleteSatelliteById(satId);
             if (null != sat) {
               return Response.ok().entity("{\"Status\":\"Success\"}").build();
@@ -111,7 +132,7 @@ public class SatelliteResource {
             }                                 
         }
                
-    }      
+         
     return Response.serverError().build();
       
   };

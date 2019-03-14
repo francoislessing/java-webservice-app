@@ -23,15 +23,30 @@ import org.slf4j.LoggerFactory;
 public class SecurityQueryParams {
   static Logger logger = LoggerFactory.getLogger(SatelliteResource.class);
   
-  @QueryParam("date_time")
+  
   private String dateTime;
 
-  @QueryParam("user_name")
+  
   private String userName;
 
-  @QueryParam("api_key")
+  
   private String apiKey;
 
+  public SecurityQueryParams(String token){
+      // Split token
+      String remainder = token.substring(token.indexOf(':')+1);
+      logger.debug("Remainder "+remainder);
+      this.dateTime = token.substring(0,token.indexOf(':')-1);
+      logger.debug("dateTime "+this.dateTime);
+      this.userName = remainder.substring(0,remainder.indexOf(':'));
+      logger.debug("userName "+this.userName);
+      this.apiKey = remainder.substring(remainder.indexOf(':')+1);
+      logger.debug("apiKey "+this.apiKey);      
+      
+      String compositeToken = this.dateTime +"-"+ this.userName + "-" + this.apiKey;
+      logger.debug("Split  ==  "+compositeToken);      
+  }
+  
   public String getApiKey() {
     return apiKey;
   }
@@ -59,11 +74,12 @@ String generatedPassword = null;
          MessageDigest md = MessageDigest.getInstance("SHA-512");
          md.update(salt.getBytes(StandardCharsets.UTF_8));
          byte[] bytes = md.digest(passwordToHash.getBytes(StandardCharsets.UTF_8));
-         StringBuilder sb = new StringBuilder();
-         for(int i=0; i< bytes.length ;i++){
-            sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
-         }
-         generatedPassword = sb.toString();
+         generatedPassword = Base64.getEncoder().encodeToString(bytes);
+//         StringBuilder sb = new StringBuilder();
+//         for(int i=0; i< bytes.length ;i++){
+//            sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+//         }
+//         generatedPassword = sb.toString();           
         } 
        catch (NoSuchAlgorithmException e){
         e.printStackTrace();
